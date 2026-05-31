@@ -4566,15 +4566,8 @@ var svx = 0, svy = 0, spd = 0;
 
 canvas.addEventListener('mousemove', function(e) {
   var r = canvas.getBoundingClientRect();
-  // Convert mouse from screen pixels to canvas pixels
-  var canvasX = (e.clientX - r.left) * (canvas.width / r.width);
-  var canvasY = (e.clientY - r.top) * (canvas.height / r.height);
-  // Convert from canvas pixels to SVG coordinate space
-  var sc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
-  var offX = (canvas.width - SVG_W * sc) / 2;
-  var offY = (canvas.height - SVG_H * sc) / 2;
-  var nx = (canvasX - offX) / sc;
-  var ny = (canvasY - offY) / sc;
+  var nx = (e.clientX - r.left) * (SVG_W / r.width);
+  var ny = (e.clientY - r.top) * (SVG_H / r.height);
   var dx = nx - mx;
   var dy = ny - my;
   spd = Math.sqrt(dx * dx + dy * dy);
@@ -4643,14 +4636,13 @@ function render() {
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-  var renderSc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
-  var renderOffX = (canvas.width - SVG_W * renderSc) / 2;
-  var renderOffY = (canvas.height - SVG_H * renderSc) / 2;
+  var renderScX = canvas.width / SVG_W;
+  var renderScY = canvas.height / SVG_H;
   var pos = new Float32Array(sparkles.length * 2);
   var scales = new Float32Array(sparkles.length);
   for (var i = 0; i < sparkles.length; i++) {
-    pos[i * 2]     = (sparkles[i].x + sparkles[i].cx) * renderSc + renderOffX;
-    pos[i * 2 + 1] = (sparkles[i].y + sparkles[i].cy) * renderSc + renderOffY;
+    pos[i * 2]     = (sparkles[i].x + sparkles[i].cx) * renderScX;
+    pos[i * 2 + 1] = (sparkles[i].y + sparkles[i].cy) * renderScY;
     scales[i]      = Math.max(0, sparkles[i].cs);
   }
 
