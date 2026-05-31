@@ -35,7 +35,7 @@ var sparkles = svgSparkles.map(function(p) {
 
 var vertSrc = 'attribute vec2 a_pos;\nattribute float a_scale;\nuniform vec2 u_res;\nuniform float u_size;\nvoid main() {\n  vec2 p = (a_pos / u_res) * 2.0 - 1.0;\n  p.y = -p.y;\n  gl_Position = vec4(p, 0.0, 1.0);\n  gl_PointSize = u_size * max(a_scale, 0.0);\n}';
 
-var fragSrc = 'precision mediump float;\nuniform vec3 u_color;\nvoid main() {\n  vec2 c = (gl_PointCoord - 0.5) * 2.0;\n  float rx = 0.38;\n  float ry = 1.0;\n  float n = 0.45;\n  float px = (c.x - c.y) * 0.7071;\n  float py = (c.x + c.y) * 0.7071;\n  float fx = px / rx;\n  float fy = py / ry;\n  float val = pow(abs(fx), n) + pow(abs(fy), n);\n  if (val > 1.0) discard;\n  float fx2 = px / ry;\n  float fy2 = py / rx;\n  float val2 = pow(abs(fx2), n) + pow(abs(fy2), n);\n  float inside = min(val, val2);\n  float alpha = smoothstep(1.0, 0.0, inside);\n  alpha = pow(alpha, 0.3);\n  gl_FragColor = vec4(u_color, alpha);\n}';
+var fragSrc = 'precision mediump float;\nuniform vec3 u_color;\nvoid main() {\n  vec2 c = (gl_PointCoord - 0.5) * 2.0;\n  float val = sqrt(abs(c.x)) + sqrt(abs(c.y));\n  if (val > 1.0) discard;\n  float alpha = smoothstep(1.0, 0.85, val);\n  gl_FragColor = vec4(u_color, alpha);\n}';
 
 function makeShader(src, type) {
   var s = gl.createShader(type);
