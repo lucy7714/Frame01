@@ -3,17 +3,18 @@ var canvas = document.getElementById('sparkle-canvas');
 var gl = canvas.getContext('webgl', {alpha: true});
 function resizeCanvas() {
   var dpr = window.devicePixelRatio || 1;
-  var r = canvas.getBoundingClientRect();
-  var w = Math.round(r.width * dpr);
-  var h = Math.round(r.height * dpr);
+  var w = canvas.offsetWidth * dpr;
+  var h = canvas.offsetHeight * dpr;
   if (w > 0 && h > 0) {
     canvas.width = w;
     canvas.height = h;
     gl.viewport(0, 0, w, h);
   }
 }
-resizeCanvas();
+// Run after layout is complete
+window.addEventListener('load', resizeCanvas);
 window.addEventListener('resize', resizeCanvas);
+setTimeout(resizeCanvas, 0);
 
 var HEAD_RADIUS = 35;
 var FALLOFF_RADIUS = 180;
@@ -62,9 +63,8 @@ var svx = 0, svy = 0, spd = 0;
 
 canvas.addEventListener('mousemove', function(e) {
   var dpr = window.devicePixelRatio || 1;
-  var r = canvas.getBoundingClientRect();
-  var canvasX = (e.clientX - r.left) * dpr;
-  var canvasY = (e.clientY - r.top) * dpr;
+  var canvasX = e.offsetX * dpr;
+  var canvasY = e.offsetY * dpr;
   var sc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
   var offX = (canvas.width - SVG_W * sc) / 2;
   var offY = (canvas.height - SVG_H * sc) / 2;
