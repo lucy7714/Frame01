@@ -3,15 +3,13 @@ var canvas = document.getElementById('sparkle-canvas');
 var gl = canvas.getContext('webgl', {alpha: true});
 function resizeCanvas() {
   var parent = canvas.parentElement;
-  var w = parent.offsetWidth;
-  var h = parent.offsetHeight;
   var dpr = window.devicePixelRatio || 1;
+  var w = parent.offsetWidth * dpr;
+  var h = parent.offsetHeight * dpr;
   if (w > 0 && h > 0) {
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    gl.viewport(0, 0, canvas.width, canvas.height);
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
   }
 }
 resizeCanvas();
