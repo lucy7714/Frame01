@@ -2,17 +2,16 @@
 var canvas = document.getElementById('sparkle-canvas');
 var gl = canvas.getContext('webgl');
 function resizeCanvas() {
-  var r = canvas.getBoundingClientRect();
-  var w = r.width || canvas.parentElement.offsetWidth || window.innerWidth;
-  var h = r.height || canvas.parentElement.offsetHeight || window.innerHeight;
+  var parent = canvas.parentElement;
+  var w = parent.offsetWidth;
+  var h = parent.offsetHeight;
   if (w > 0 && h > 0) {
     canvas.width = w;
     canvas.height = h;
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
 }
-// Delay to ensure Webflow layout is complete
-setTimeout(resizeCanvas, 100);
+resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 var HEAD_RADIUS = 35;
@@ -4565,13 +4564,17 @@ gl.enableVertexAttribArray(scaleLoc);
 var mx = 0, my = 0;
 var svx = 0, svy = 0, spd = 0;
 
-document.addEventListener('mousemove', function(e) {
-  // Always recalculate rect to handle any scaling, scrolling or layout changes
+canvas.addEventListener('mousemove', function(e) {
   var r = canvas.getBoundingClientRect();
-  var scaleX = canvas.width / r.width;
-  var scaleY = canvas.height / r.height;
-  var nx = (e.clientX - r.left) * scaleX;
-  var ny = (e.clientY - r.top) * scaleY;
+  // Convert mouse from screen pixels to canvas pixels
+  var canvasX = (e.clientX - r.left) * (canvas.width / r.width);
+  var canvasY = (e.clientY - r.top) * (canvas.height / r.height);
+  // Convert from canvas pixels to SVG coordinate space
+  var sc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
+  var offX = (canvas.width - SVG_W * sc) / 2;
+  var offY = (canvas.height - SVG_H * sc) / 2;
+  var nx = (canvasX - offX) / sc;
+  var ny = (canvasY - offY) / sc;
   var dx = nx - mx;
   var dy = ny - my;
   spd = Math.sqrt(dx * dx + dy * dy);
