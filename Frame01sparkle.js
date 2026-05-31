@@ -5,9 +5,12 @@ function resizeCanvas() {
   var parent = canvas.parentElement;
   var w = parent.offsetWidth;
   var h = parent.offsetHeight;
+  var dpr = window.devicePixelRatio || 1;
   if (w > 0 && h > 0) {
-    canvas.width = w;
-    canvas.height = h;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
 }
@@ -156,7 +159,8 @@ function render() {
   gl.vertexAttribPointer(scaleLoc, 1, gl.FLOAT, false, 0, 0);
 
   gl.uniform2f(resLoc, canvas.width, canvas.height);
-  var dynamicSize = POINT_SIZE * (canvas.width / SVG_W);
+  var dpr = window.devicePixelRatio || 1;
+  var dynamicSize = POINT_SIZE * (canvas.width / SVG_W) / dpr;
   gl.uniform1f(sizeLoc, dynamicSize);
   gl.uniform3f(colorLoc, 0.0, 0.0, 0.0);
   gl.drawArrays(gl.POINTS, 0, sparkles.length);
