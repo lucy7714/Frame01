@@ -156,9 +156,9 @@ function render() {
   gl.vertexAttribPointer(scaleLoc, 1, gl.FLOAT, false, 0, 0);
 
   gl.uniform2f(resLoc, canvas.width, canvas.height);
-  var dynamicSize = POINT_SIZE * (canvas.width / SVG_W);
+  var dynamicSize = POINT_SIZE * (canvas.width / SVG_W) * 0.4;
   gl.uniform1f(sizeLoc, dynamicSize);
-  gl.uniform3f(colorLoc, 1.0, 1.0, 1.0);
+  gl.uniform3f(colorLoc, 0.0, 0.0, 0.0);
   gl.drawArrays(gl.POINTS, 0, sparkles.length);
   requestAnimationFrame(render);
 }
