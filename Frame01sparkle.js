@@ -1,6 +1,6 @@
 // Wait for DOM if needed
 var canvas = document.getElementById('sparkle-canvas');
-var gl = canvas.getContext('webgl');
+var gl = canvas.getContext('webgl', {alpha: true});
 function resizeCanvas() {
   var parent = canvas.parentElement;
   var w = parent.offsetWidth;
@@ -63,7 +63,7 @@ canvas.addEventListener('mousemove', function(e) {
   var r = canvas.getBoundingClientRect();
   var canvasX = (e.clientX - r.left) * (canvas.width / r.width);
   var canvasY = (e.clientY - r.top) * (canvas.height / r.height);
-  var sc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
+  var sc = Math.max(canvas.width / SVG_W, canvas.height / SVG_H);
   var offX = (canvas.width - SVG_W * sc) / 2;
   var offY = (canvas.height - SVG_H * sc) / 2;
   var nx = (canvasX - offX) / sc;
@@ -131,12 +131,12 @@ function update() {
 
 function render() {
   update();
-  gl.clearColor(0, 0, 0, 1);
+  gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-  var renderSc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
+  var renderSc = Math.max(canvas.width / SVG_W, canvas.height / SVG_H);
   var renderOffX = (canvas.width - SVG_W * renderSc) / 2;
   var renderOffY = (canvas.height - SVG_H * renderSc) / 2;
   var pos = new Float32Array(sparkles.length * 2);
@@ -156,7 +156,8 @@ function render() {
   gl.vertexAttribPointer(scaleLoc, 1, gl.FLOAT, false, 0, 0);
 
   gl.uniform2f(resLoc, canvas.width, canvas.height);
-  gl.uniform1f(sizeLoc, POINT_SIZE);
+  var dynamicSize = POINT_SIZE * (canvas.width / SVG_W);
+  gl.uniform1f(sizeLoc, dynamicSize);
   gl.uniform3f(colorLoc, 1.0, 1.0, 1.0);
   gl.drawArrays(gl.POINTS, 0, sparkles.length);
   requestAnimationFrame(render);
