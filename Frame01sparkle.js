@@ -8,8 +8,6 @@ function resizeCanvas() {
   if (cssW > 0 && cssH > 0) {
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
-    canvas.style.width = cssW + 'px';
-    canvas.style.height = cssH + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
 }
