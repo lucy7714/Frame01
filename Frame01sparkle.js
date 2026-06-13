@@ -146,7 +146,7 @@ function render() {
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
   var renderSc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
-  var renderOffX = (canvas.width - SVG_W * renderSc) / 2;
+  var renderOffX = (canvas.width - SVG_W * renderSc) / 2 - canvas.width * 0.10;
   var renderOffY = (canvas.height - SVG_H * renderSc) / 2;
   var pos = new Float32Array(sparkles.length * 2);
   var scales = new Float32Array(sparkles.length);
