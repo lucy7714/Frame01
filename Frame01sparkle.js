@@ -1,6 +1,6 @@
-// Wait for DOM if needed
 var canvas = document.getElementById('sparkle-canvas');
 var gl = canvas.getContext('webgl', {alpha: true});
+
 function resizeCanvas() {
   var dpr = window.devicePixelRatio || 1;
   var cssW = canvas.offsetWidth;
@@ -13,10 +13,17 @@ function resizeCanvas() {
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
 }
-// Run after layout is complete
-window.addEventListener('load', resizeCanvas);
-window.addEventListener('resize', resizeCanvas);
-setTimeout(resizeCanvas, 0);
+
+if (window.ResizeObserver) {
+  var ro = new ResizeObserver(function() {
+    resizeCanvas();
+  });
+  ro.observe(canvas);
+} else {
+  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('load', resizeCanvas);
+  setTimeout(resizeCanvas, 0);
+}
 
 var HEAD_RADIUS = 35;
 var FALLOFF_RADIUS = 180;
