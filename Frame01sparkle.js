@@ -21,7 +21,7 @@ setTimeout(resizeCanvas, 0);
 var HEAD_RADIUS = 35;
 var FALLOFF_RADIUS = 180;
 var PUSH = 35;
-var POINT_SIZE = 10;
+var POINT_SIZE = 8;
 var RESPONSE = 0.10;
 
 var SVG_W = 708.18;
