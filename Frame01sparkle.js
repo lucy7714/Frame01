@@ -140,7 +140,7 @@ function update() {
 
 function render() {
   update();
-  gl.clearColor(0.4667, 0.0745, 0.1216, 1.0);
+  gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -168,7 +168,7 @@ function render() {
   var dpr = window.devicePixelRatio || 1;
   var dynamicSize = POINT_SIZE * (canvas.width / SVG_W) / dpr;
   gl.uniform1f(sizeLoc, dynamicSize);
-  gl.uniform3f(colorLoc, 0.0, 0.0, 0.0);
+  gl.uniform3f(colorLoc, 0.467, 0.075, 0.122);
   gl.drawArrays(gl.POINTS, 0, sparkles.length);
   requestAnimationFrame(render);
 }
