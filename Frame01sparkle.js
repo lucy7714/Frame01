@@ -76,7 +76,7 @@ canvas.addEventListener('mousemove', function(e) {
   var offX = (canvas.width - SVG_W * sc) / 2;
   var offY = (canvas.height - SVG_H * sc) / 2;
   var nx = (canvasX - offX) / sc;
-  var ny = (canvasY - offY) / sc + 20;
+  var ny = (canvasY - offY) / sc - 200;
   var dx = nx - mx;
   var dy = ny - my;
   spd = Math.sqrt(dx * dx + dy * dy);
@@ -147,7 +147,7 @@ function render() {
 
   var renderSc = Math.min(canvas.width / SVG_W, canvas.height / SVG_H);
   var renderOffX = (canvas.width - SVG_W * renderSc) / 2;
-  var renderOffY = (canvas.height - SVG_H * renderSc) / 2 - renderSc * 20;;
+  var renderOffY = (canvas.height - SVG_H * renderSc) / 2 + renderSc * 200;
   var pos = new Float32Array(sparkles.length * 2);
   var scales = new Float32Array(sparkles.length);
   for (var i = 0; i < sparkles.length; i++) {
